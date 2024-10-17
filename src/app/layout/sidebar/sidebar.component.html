@@ -1,0 +1,83 @@
+<aside
+  [ngClass]="{
+    'translate-x-0': isSidebarOpen,
+    '-translate-x-full': !isSidebarOpen
+  }"
+  class="fixed z-40 bg-[#3b86f7] text-white h-screen w-64 shadow-lg transform transition-transform border-gray-400 transition-all duration-300"
+>
+  <!-- Header with Toggle Button -->
+  <div class="px-3 flex items-center justify-between">
+    <button (click)="sidebarService.toggleSidebar()" class="p-2 text-white">
+      <i class="ti ti-arrow-left text-4xl"></i>
+    </button>
+    <p class="text-lg font-semibold p-2 text-xl "><a routerLink="/Admin/dashboard"> Smart Assist </a></p>
+  </div>
+
+  <!-- Sidebar Navigation -->
+  <div class="px-6 mt-8">
+    <nav class="w-full flex flex-col sidebar-nav">
+      <ul id="sidebarnav" class="text-white text-sm space-y-4">
+        <!-- Home Section -->
+        
+
+        <!-- Sidebar Item with Dropdown -->
+        <li class="sidebar-item relative">
+         
+		  <div class="space-y-4">
+			<!-- Collapsible Item 1 -->
+			<div class="rounded-lg">
+			  <button
+				(click)="toggleCollapse(0)"
+				class="w-full flex justify-between items-center py-3 px-4 text-left focus:outline-none transition-all duration-300 bg-transparent text-white hover:text-gray-300 rounded-lg text-lg font-bold "
+			  >
+				<span>Dashboard</span>
+				<i
+				  class="ml-2 transition-transform duration-300"
+				  [ngClass]="isCollapsed[0] ? 'ti ti-chevron-down' : 'ti ti-chevron-up'"
+				></i>
+			  </button>
+		  
+			  <!-- Collapsible Content -->
+			  <ul
+				*ngIf="!isCollapsed[0]"
+				class="overflow-hidden transition-max-height duration-500 ease-in-out max-h-0"
+				[ngStyle]="{ 'max-height': isCollapsed[0] ? '0' : '500px' }"
+			  >
+				<li class="py-2 ml-4">
+				  <a
+					 routerLink="/Admin/dealers"
+					class="block py-2 px-4 hover:bg-blue-100 hover:text-blue-600 rounded transition-all duration-200 font-bold "
+				  >
+					Dealer
+				  </a>
+				</li>
+				<li class="py-2 ml-4">
+				  <a
+					routerLink="/Admin/users"
+					class="block py-2 px-4 hover:bg-blue-100 hover:text-blue-600 rounded transition-all duration-200 font-bold"
+				  >
+					Users
+				  </a>
+				</li>
+				<li class="py-2 ml-4">
+				  <a
+					routerLink="/Admin/customers"
+					class="block py-2 px-4 hover:bg-blue-100 hover:text-blue-600 rounded transition-all duration-200 font-bold"
+				  >
+					Customers
+				  </a>
+				</li>
+			  </ul>
+			</div>
+		  </div>
+		  
+		  
+          
+        </li>
+
+         
+ 
+      </ul>
+    </nav>
+  </div>
+</aside>

@@ -23,16 +23,15 @@
             "assets": [
               "src/favicon.ico",
               "src/public",
-              "src/assets/images"
+              "src/assets/images",
+              "src/assets/admin-img"
             ],
             "styles": [
               "src/styles.css",
               "src/assets/css/theme.css"
             ],
             "scripts": [
-              "node_modules/jquery/dist/jquery.min.js",
-              "src/assets/js/dashboard.js",
-              "src/assets/js/sidebarmenu.js"
+              "node_modules/jquery/dist/jquery.min.js"
             ],
             "server": "src/main.server.ts",
             "prerender": true,

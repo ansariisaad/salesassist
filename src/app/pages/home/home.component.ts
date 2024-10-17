@@ -9,14 +9,12 @@ import { CommonModule } from '@angular/common';
   styleUrl: './home.component.css'
 })
 export class HomeComponent {
-  isSidebarOpen = true; // Sidebar is open by default
-
-  // Function to toggle the sidebar
-  toggleSidebar(): void {
-    // debugger
-    console.log("It is not working")
-    this.isSidebarOpen = !this.isSidebarOpen;
-  }
+  // isSidebarOpen = true; 
+ 
+  // toggleSidebar(): void { 
+  //   console.log("It is not working")
+  //   this.isSidebarOpen = !this.isSidebarOpen;
+  // }
 
 }
 
