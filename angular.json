@@ -21,15 +21,19 @@
             ],
             "tsConfig": "tsconfig.app.json",
             "assets": [
-              {
-                "glob": "**/*",
-                "input": "public"
-              }
+              "src/favicon.ico",
+              "src/public",
+              "src/assets/images"
             ],
             "styles": [
-              "src/styles.css"
+              "src/styles.css",
+              "src/assets/css/theme.css"
             ],
-            "scripts": [],
+            "scripts": [
+              "node_modules/jquery/dist/jquery.min.js",
+              "src/assets/js/dashboard.js",
+              "src/assets/js/sidebarmenu.js"
+            ],
             "server": "src/main.server.ts",
             "prerender": true,
             "ssr": {
