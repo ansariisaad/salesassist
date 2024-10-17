@@ -11,7 +11,8 @@ import { NgApexchartsModule } from 'ng-apexcharts';
     FormsModule,
     RouterModule,
     HeaderComponent, 
-    NgApexchartsModule 
+    NgApexchartsModule ,
+     
 
   ],
   exports: [

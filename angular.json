@@ -30,8 +30,7 @@
               "src/styles.css",
               "src/assets/css/theme.css"
             ],
-            "scripts": [
-              "node_modules/jquery/dist/jquery.min.js"
+            "scripts": [ 
             ],
             "server": "src/main.server.ts",
             "prerender": true,
