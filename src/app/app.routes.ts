@@ -7,6 +7,7 @@ import { UsersComponent } from './pages/users/users.component';
 import { DealerComponent } from './pages/dealer/dealer.component';
 import { CustomersComponent } from './pages/customers/customers.component';
 import { Component } from '@angular/core';
+import { authGuard } from './guard/auth.guard';
 
 export const routes: Routes = [
     {
@@ -14,16 +15,28 @@ export const routes: Routes = [
         component: LoginComponent
     },
     {
-        path: 'Dashboard',
-        component: DashboardComponent
-    },
+        path: 'login',
+        component: LoginComponent
+    }, 
     { path: 'Admin', component:OverviewComponent,children: [    
-        {path:'overview',component:OverviewComponent},  
-        {path:'dashboard',component:DashboardComponent}, 
-        {path:'users' , component:UsersComponent},
-        {path:'dealers', component: DealerComponent},
-        {path: 'customers', component: CustomersComponent}
+        {path:'overview',component:OverviewComponent, canActivate : [authGuard]},  
+        {path:'dashboard',component:DashboardComponent , canActivate : [authGuard]}, 
+        {path:'users' , component:UsersComponent , canActivate : [authGuard]},
+        {path:'dealers', component: DealerComponent , canActivate : [authGuard]},
+        {path: 'customers', component: CustomersComponent , canActivate : [authGuard]}
       ]
     } 
-    
+    // {
+    //     path : '',
+    //     redirectTo : 'login',
+    //     pathMatch  : 'full'
+    // },
+    // {
+    //     path: 'login',
+    //     component : LoginComponent
+    // },
+    // {
+    //     path: '',
+    //     component
+    // }
 ];

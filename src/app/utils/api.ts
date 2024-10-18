@@ -1,0 +1,1 @@
+export const baseUrl = 'https://dinosaur-cute-lightly.ngrok-free.app/api/' 

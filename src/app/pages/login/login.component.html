@@ -11,8 +11,7 @@
         alt="Avatar Image"
       /> 
       <h2 class="title">Super Admin</h2>
-
-      <!-- Username input field -->
+ 
       <div class="input-div one">
         <div class="i">
           <i class="fas fa-user"></i>
@@ -20,7 +19,7 @@
         <div class="div relative">
           <h5 class="absolute left-2 top-1 text-gray-500 text-sm">Username</h5>
           <input
-            [(ngModel)]="loginObj.userName"
+            [(ngModel)]="loginObj.email"
             #inputElement
             type="text"
             class="focus:outline-none focus:border-none border-transparent focus:ring-0 w-full py-2 px-4 bg-transparent text-gray-800"
@@ -30,9 +29,7 @@
           />
         </div>
       </div>
-      
-
-      <!-- Password input field -->
+       
       <div class="input-div pass">
         <div class="i">
           <i class="fas fa-lock"></i>
@@ -53,7 +50,7 @@
 
       <a class="forgot-password">Forgot Password?</a>
 
-      <input (click)="onLogin()" type="submit" class="btn" value="Login" />
+      <input (click)="onLoginBtn()" type="submit" class="btn" value="Login" />
     </form>
   </div>
 </div>

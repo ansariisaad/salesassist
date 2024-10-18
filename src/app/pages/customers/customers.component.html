@@ -5,16 +5,17 @@
             <div class="mb-6 flex items-center space-x-4">
               <label for="row-count" class="text-lg font-semibold text-gray-700">Select number of users:</label>
               <select id="row-count" [(ngModel)]="selectedRowCount" (change)="updateDisplayedUsers()"
-                class="bg-white border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-500 focus:outline-none">
-                <option *ngFor="let option of rowOptions" [value]="option">{{ option }}</option>
+                class="pr-8   bg-white border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                <option class="  "  *ngFor="let option of rowOptions" [value]="option">{{ option }}</option>
               </select>
             </div>
           
             <!-- Table to display the users -->
             <div class="overflow-x-auto bg-white rounded-lg shadow-md">
               <table class="min-w-full table-auto">
-                <thead class="bg-gray-200 text-gray-700">
+                <thead class="bg-gray-200 text-gray-700 ">
                   <tr>
+                    <th class="py-3 px-4 text-left">Index</th>
                     <th class="py-3 px-4 text-left">Name</th>
                     <th class="py-3 px-4 text-left">Position</th>
                     <th class="py-3 px-4 text-left">Office</th>
@@ -25,6 +26,7 @@
                 </thead>
                 <tbody>
                   <tr *ngFor="let user of displayedUsers" class="border-b hover:bg-gray-100 transition-colors">
+                    <td class="py-3 px-4">{{ user.index }}</td>
                     <td class="py-3 px-4">{{ user.name }}</td>
                     <td class="py-3 px-4">{{ user.position }}</td>
                     <td class="py-3 px-4">{{ user.office }}</td>
