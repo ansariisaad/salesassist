@@ -24,6 +24,7 @@ export class LoginComponent implements AfterViewInit {
   @ViewChildren('inputElement') inputElements:
     | QueryList<ElementRef>
     | undefined;
+  cookieService: any;
 
   constructor(private renderer: Renderer2, private cookie: CookieService) {}
 
@@ -72,26 +73,22 @@ export class LoginComponent implements AfterViewInit {
 
   onLoginBtn() {
     this.http
-      .post( baseUrl + 'login/super-admin',
-        this.loginObj
-      )
+      .post(baseUrl + 'login/super-admin', this.loginObj)
       .subscribe((res: any) => {
         console.log(res);
         if (res.token) {
           alert('Login Successful');
-          this.router.navigateByUrl('/Admin/dashboard'); 
+          this.router.navigateByUrl('/Admin/dashboard');
           // Store the token in sessionStorage
-          sessionStorage.setItem('adminToken', res.token); 
-          // Set a timeout to remove the token after 1 minute
+          sessionStorage.setItem('adminToken', res.token);  
           setTimeout(() => {
-            this.router.navigateByUrl('/login'); // Optionally redirect to login
+            this.router.navigateByUrl('/login');  
             sessionStorage.removeItem('adminToken');
-            // alert('Session expired. Please log in again.');
-          }, 300000); 
+            alert('Session expired. Please log in again.');
+          }, 100000 * 6);
         } else {
           alert('Wrong Password');
         }
       });
   }
-  
 }

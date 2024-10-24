@@ -1,11 +1,11 @@
-<div class="w-full page-wrapper overflow-hidden"> 
-    <div class="  mt-20">  
+<div class="w-full   overflow-hidden"> 
+    <div class="">  
         <div class="container mx-auto p-6 bg-gray-50 rounded-lg shadow-md">
             <!-- Dropdown to select number of users -->
             <div class="mb-6 flex items-center space-x-4">
               <label for="row-count" class="text-lg font-semibold text-gray-700">Select number of users:</label>
               <select id="row-count" [(ngModel)]="selectedRowCount" (change)="updateDisplayedUsers()"
-                class="pr-8   bg-white border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                class="pr-8   bg-white border border-gray-300 rounded-lg pr-10 focus:ring-2 focus:ring-blue-500 focus:outline-none">
                 <option class="  "  *ngFor="let option of rowOptions" [value]="option">{{ option }}</option>
               </select>
             </div>

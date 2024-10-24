@@ -1,41 +1,81 @@
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { SharedModule } from '../../shared/shared.module';
+import { FormsModule } from '@angular/forms';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+
+interface Distributor {
+  distributor_id: string;
+  dist_name: string;
+  dist_role: string;
+  dist_email: string;
+  dist_password: string;
+  d_code: string;
+  branch_name: string;
+  pincode: number;
+  created_at: string;
+  updated_at: string;
+}
+
+interface DistributorResponse {
+  totalDists: number;
+  totalPages: number;
+  currentPage: number;
+  distributors: Distributor[];
+}
 
 @Component({
   selector: 'app-dealer',
   standalone: true,
-  imports: [CommonModule , SharedModule],
+  imports: [CommonModule, SharedModule, FormsModule, MatProgressSpinnerModule],
   templateUrl: './dealer.component.html',
   styleUrls: ['./dealer.component.css']
 })
-export class DealerComponent {
-  // Array of user data
-  users = [
-    { name: 'Tiger Nixon', position: 'System Architect', office: 'Edinburgh', age: 61, startDate: '2011/04/25', salary: '$320,800' },
-    { name: 'Garrett Winters', position: 'Accountant', office: 'Tokyo', age: 63, startDate: '2011/07/25', salary: '$170,750' },
-    { name: 'Ashton Cox', position: 'Junior Technical Author', office: 'San Francisco', age: 66, startDate: '2009/01/12', salary: '$86,000' },
-    { name: 'Cedric Kelly', position: 'Senior Javascript Developer', office: 'Edinburgh', age: 22, startDate: '2012/03/29', salary: '$433,060' },
-    { name: 'Airi Satou', position: 'Accountant', office: 'Tokyo', age: 33, startDate: '2008/11/28', salary: '$162,700' },
-    { name: 'Brielle Williamson', position: 'Integration Specialist', office: 'New York', age: 61, startDate: '2012/12/02', salary: '$372,000' },
-    { name: 'Herrod Chandler', position: 'Sales Assistant', office: 'San Francisco', age: 59, startDate: '2012/08/06', salary: '$137,500' },
-    { name: 'Rhona Davidson', position: 'Integration Specialist', office: 'Tokyo', age: 55, startDate: '2010/10/14', salary: '$327,900' },
-    { name: 'Colleen Hurst', position: 'Javascript Developer', office: 'San Francisco', age: 39, startDate: '2009/09/15', salary: '$205,500' },
-    { name: 'Sonya Frost', position: 'Software Engineer', office: 'Edinburgh', age: 23, startDate: '2008/12/13', salary: '$103,600' }
-  ];
+export class DealerComponent implements OnInit {
+  private http = inject(HttpClient);
 
-  // Default number of users to display
-  selectedRowCount = 25;
-  
-  // The users that will be displayed
-  displayedUsers = this.users.slice(0, this.selectedRowCount);
-  
+  users: Distributor[] = [];
+  displayedUsers: Distributor[] = [];
+  selectedRowCount = 3;
+  isLoading = false; // Loading state variable
+
   // Array of options for the select dropdown
-  rowOptions = [5, 10, 20, 30, 50];
+  rowOptions = [1, 2, 5, 10, 20, 30, 50];
+
+   
+  ngOnInit(): void {
+    this.fetchDealerData(); 
+  }
   
-  // Method to update the displayed users when the dropdown changes
+
   updateDisplayedUsers() {
     this.displayedUsers = this.users.slice(0, this.selectedRowCount);
   }
-}
 
+  fetchDealerData() {
+    const token = sessionStorage.getItem('adminToken');
+    const apiUrl = 'https://dinosaur-cute-lightly.ngrok-free.app/api/superAdmin/distributors/all';
+    const headers = new HttpHeaders()
+      .set('authorization', `Bearer ${token}`)
+      .set('accept', 'application/json');
+      this.isLoading = true;  
+
+      this.http.get<DistributorResponse>(apiUrl, { headers }).subscribe({
+        next: (response) => {
+          this.isLoading = false; // Set loading to false after data is fetched
+          if (response && response.distributors) {
+            this.users = response.distributors;
+            this.updateDisplayedUsers();
+            console.log('Dealer data fetched successfully:', this.users);
+          } else {
+          console.error('Unexpected response structure:', response);
+        }
+      },
+      error: (error) => {
+        // this.isLoading = false; // Set loading to false if there is an error
+        console.error('Error fetching dealer data:', error);
+      }
+    });
+  }
+}
