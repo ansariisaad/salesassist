@@ -85,7 +85,7 @@ export class LoginComponent implements AfterViewInit {
             this.router.navigateByUrl('/login');  
             sessionStorage.removeItem('adminToken');
             alert('Session expired. Please log in again.');
-          }, 100000 * 6);
+          }, 1000000 * 6);
         } else {
           alert('Wrong Password');
         }

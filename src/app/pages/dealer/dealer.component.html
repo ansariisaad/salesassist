@@ -1,104 +1,101 @@
 <div class="w-full overflow-hidden">
-  <div class="mt-20">
-    <div class="container mx-auto p-6 bg-gray-50 rounded-lg shadow-md">
-      <!-- Dropdown to select number of users -->
-      <div class="mb-6 flex items-center space-x-4">
-        <label for="row-count" class="text-lg font-semibold text-gray-700">
-          Select number of users:
-        </label>
-        <select
-          id="row-count"
-          [(ngModel)]="selectedRowCount"
-          (change)="updateDisplayedUsers()"
-          class="bg-white border border-gray-300 pr-10 rounded-lg p-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
-        >
-          <option *ngFor="let option of rowOptions" [value]="option">
-            {{ option }}
-          </option>
-        </select>
+  <div class="flex justify-center">
+    <!-- Button to Open Modal -->
+    <!-- <button (click)="openModal()" class="border p-2 hover:bg-black hover:text-white ml-4">Add User</button> -->
+    
+    <button (click)="openModal()" class="px-4 py-2 text-white bg-blue-600  rounded hover:bg-blue-300 focus:outline-none ml-2">Add New User</button>
+  </div>
+
+  <!-- Main Content -->
+  <div class="container mx-auto p-6 bg-gray-50 rounded-lg shadow-md mt-6">
+    <!-- Dropdown to select number of users -->
+    <div class="mb-6 flex items-center space-x-4">
+      <label for="row-count" class="text-lg font-semibold text-gray-700">
+        Select number of users:
+      </label>
+      <select
+        id="row-count"
+        [(ngModel)]="selectedRowCount"
+        (change)="updateDisplayedUsers()"
+        class="bg-white border border-gray-300 pr-10 rounded-lg p-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+      >
+        <option *ngFor="let option of rowOptions" [value]="option">
+          {{ option }}
+        </option>
+      </select>
+    </div>
+
+    <!-- Table to display the users -->
+    <div class="overflow-x-auto bg-white rounded-lg shadow-md">
+      <table class="min-w-full table-auto">
+        <thead class="bg-gray-200 text-gray-700">
+          <tr>
+            <th class="py-3 px-4 text-left">Sr No</th>
+            <th class="py-3 px-4 text-left">Branch Name</th>
+            <th class="py-3 px-4 text-left">Pincode</th>
+            <th class="py-3 px-4 text-left">Dist Name</th>
+            <th class="py-3 px-4 text-left">Dist E-mail</th> 
+          </tr>
+        </thead>
+        <tbody>
+          @for (item of distributorList(); track $index) { 
+          <tr   class="border-b hover:bg-gray-100 transition-colors">
+            <td class="py-3 px-4">{{  $index+1 }}</td>
+            <td class="py-3 px-4">{{ item.branch_name }}</td>
+            <td class="py-3 px-4">{{ item.pincode }}</td>
+            <td class="py-3 px-4">{{ item.dist_name }}</td>
+            <td class="py-3 px-4">{{ item.dist_email }}</td>
+          </tr>
+        }
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div *ngIf="isModalVisible" class="fixed inset-0 z-40 flex items-center justify-center bg-black bg-opacity-50">
+    <div class="relative w-full max-w-md p-6 mx-2 bg-white rounded-lg shadow-lg">
+      <!-- Modal Header -->
+      <div class="flex justify-between items-start pb-4 border-b border-gray-200">
+        <h2 class="text-xl font-semibold">Add New User</h2>
+        <button (click)="closeModal()" class="text-gray-500 hover:text-gray-700">&times;</button>
       </div>
 
-      <!-- Table to display the users -->
-      <div class="overflow-x-auto bg-white rounded-lg shadow-md">
-        <table class="min-w-full table-auto">
-          <thead class="bg-gray-200 text-gray-700">
-            <tr>
-              <th class="py-3 px-4 text-left">Name</th>
-              <th class="py-3 px-4 text-left">Position</th>
-              <th class="py-3 px-4 text-left">E-mail</th>
-              <th class="py-3 px-4 text-left">Dist Code</th>
-              <th class="py-3 px-4 text-left">Branch Name</th>
-              <th class="py-3 px-4 text-left">Pincode</th>
-            </tr>
-          </thead>
-          <tbody>
-            <!-- Use isLoading to manage loading state -->
-            <tr
-              *ngFor="let user of displayedUsers"
-              class="border-b hover:bg-gray-100 transition-colors"
-            >
-              <!-- Name -->
-              <td class="py-3 px-4">
-                <ng-container *ngIf="!isLoading; else loadingName">
-                  {{ user.dist_name }}
-                </ng-container>
-                <ng-template #loadingName>
-                  <div class="h-4 bg-gray-300 rounded w-24 animate-pulse"></div>
-                </ng-template>
-              </td>
-              <!-- Position -->
-              <td class="py-3 px-4">
-                <ng-container *ngIf="!isLoading; else loadingPosition">
-                  {{ user.dist_role }}
-                </ng-container>
-                <ng-template #loadingPosition>
-                  <div class="h-4 bg-gray-300 rounded w-24 animate-pulse"></div>
-                </ng-template>
-              </td>
-              <!-- Email -->
-              <td class="py-3 px-4">
-                <ng-container *ngIf="!isLoading; else loadingEmail">
-                  {{ user.dist_email }}
-                </ng-container>
-                <ng-template #loadingEmail>
-                  <div class="h-4 bg-gray-300 rounded w-36 animate-pulse"></div>
-                </ng-template>
-              </td>
-              <!-- Dist Code -->
-              <td class="py-3 px-4">
-                <ng-container *ngIf="!isLoading; else loadingDistCode">
-                  {{ user.d_code }}
-                </ng-container>
-                <ng-template #loadingDistCode>
-                  <div class="h-4 bg-gray-300 rounded w-12 animate-pulse"></div>
-                </ng-template>
-              </td>
-              <!-- Branch Name -->
-              <td class="py-3 px-4">
-                <ng-container *ngIf="!isLoading; else loadingBranchName">
-                  {{ user.branch_name }}
-                </ng-container>
-                <ng-template #loadingBranchName>
-                  <div class="h-4 bg-gray-300 rounded w-28 animate-pulse"></div>
-                </ng-template>
-              </td>
-              <!-- Pincode -->
-              <td class="py-3 px-4">
-                <ng-container *ngIf="!isLoading; else loadingPincode">
-                  {{ user.pincode }}
-                </ng-container>
-                <ng-template #loadingPincode>
-                  <div class="h-4 bg-gray-300 rounded w-16 animate-pulse"></div>
-                </ng-template>
-              </td>
-            </tr>
-            <!-- <tr *ngIf="isLoading"></tr> -->
-          </tbody>
-        </table>
-        <div  *ngIf="isLoading" class="w-full flex items-center justify-center custom-spinner">
-          <mat-progress-spinner mode="indeterminate" class="custom-spinner">
-          </mat-progress-spinner>
+      <!-- Modal Content -->
+      <div *ngFor="let item of distributorList(); let i = index" class="mt-6 p-4 bg-gray-100">
+        <div class="mb-4">
+          <label>Branch Name</label>
+          <input type="text" class="mt-1 block w-full border" [(ngModel)]="item.branch_name" />
         </div>
+      
+        <div class="mb-4">
+          <label>Pincode</label>
+          <input type="text" class="mt-1 block w-full border" [(ngModel)]="item.pincode" />
+        </div>
+      
+        <div class="mb-4">
+          <label>Distributor Name</label>
+          <input type="text" class="mt-1 block w-full border" [(ngModel)]="item.dist_name" />
+        </div>
+      
+        <div class="mb-4">
+          <label>Distributor Email</label>
+          <input type="email" class="mt-1 block w-full border" [(ngModel)]="item.dist_email" />
+        </div>
+      
+        <div class="mb-4">
+          <label>Distributor Password</label>
+          <input type="password" class="mt-1 block w-full border" [(ngModel)]="item.dist_password" />
+        </div>
+      </div>
+      
+      
+      
+
+      <!-- Modal Footer -->
+      <div class="mt-6 text-right">
+        <button (click)="closeModal()" class="px-4 py-2 text-white bg-red-500 rounded hover:bg-red-600 focus:outline-none">Cancel</button>
+        <button (click)="createNewDist()" class="px-4 py-2 text-white bg-blue-600  rounded hover:bg-blue-300 focus:outline-none ml-2">Save</button>
       </div>
     </div>
   </div>

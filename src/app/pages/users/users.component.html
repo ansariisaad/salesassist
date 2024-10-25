@@ -37,3 +37,22 @@
         
   </div>
 </div>
+<table datatable [dtOptions]="dtOptions" class="row-border hover">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>First name</th>
+      <th>Last name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let user of displayedUsers" class="border-b hover:bg-gray-100 transition-colors">
+      <td class="py-3 px-4">{{ user.name }}</td>
+      <td class="py-3 px-4">{{ user.position }}</td>
+      <td class="py-3 px-4">{{ user.office }}</td> 
+    </tr> 
+  </tbody>
+</table>
+
+
+

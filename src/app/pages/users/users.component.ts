@@ -1,15 +1,18 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component , OnInit } from '@angular/core';
 import { SharedModule } from '../../shared/shared.module';
+import { BrowserModule } from '@angular/platform-browser'; 
+import { DataTablesModule } from "angular-datatables";
+import { Config } from 'datatables.net';
 
 @Component({
   selector: 'app-dealer',
   standalone: true,
-  imports: [CommonModule , SharedModule],
+  imports: [CommonModule , SharedModule ,   DataTablesModule],
   templateUrl: './users.component.html',
   styleUrls: ['./users.component.css']
 })
-export class UsersComponent {
+export class UsersComponent implements OnInit {
   // Array of user data
   users = [
     { name: 'Tiger Nixon', position: 'System Architect', office: 'Edinburgh', age: 61, startDate: '2011/04/25', salary: '$320,800' },
@@ -32,6 +35,12 @@ export class UsersComponent {
     { name: 'Sonya Frost', position: 'Software Engineer', office: 'Edinburgh', age: 23, startDate: '2008/12/13', salary: '$103,600' }
   ];
 
+  dtOptions: Config = {};
+  ngOnInit(): void {
+    this.dtOptions = {
+      pagingType: 'full_numbers'
+    };
+  }
   // Default number of users to display
   selectedRowCount = 15;
   
