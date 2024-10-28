@@ -1,0 +1,8 @@
+.div.dt-container .dt-input{
+    border-radius: 10px !important;
+}
+
+.div.dt-container select.dt-input{
+    padding: 0px !important;
+
+}

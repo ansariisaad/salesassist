@@ -12,6 +12,7 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { baseUrl } from '../../utils/api';
+import { dinosourUrl } from '../../utils/api';
 
 @Component({
   selector: 'app-login',
