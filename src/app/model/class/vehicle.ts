@@ -15,7 +15,7 @@ export class Vehicles {
     corporate_id : string;
   
     constructor() {
-      this.vehicle_id = '';
+      this.vehicle_id = ' ';
       this.YOM = '';
       this.vehicle_name = '';
       this.type = '';

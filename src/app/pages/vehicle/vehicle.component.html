@@ -1,97 +1,146 @@
-<!-- <div class="w-full overflow-hidden">
-  <div class=" ">
-    <div class="container mx-auto p-6 bg-gray-50 rounded-lg shadow-md">
-      <div class="overflow-x-auto bg-white rounded-lg shadow-md">
-        <table datatable [dtOptions]="dtOptions"  id="vehicleTable" class="display">
-          <thead>
-            <tr>
-              <th>Yrs Of Mfg</th>
-              <th>Vehicle Name</th>
-              <th>Vehicle Types</th>
-              <th>VIN Id</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let vehicle of vehicleList(); let i = index">
-              <td>{{ vehicle.YOM }}</td>
-              <td>{{ vehicle.vehicle_name }}</td>
-              <td>{{ vehicle.type }}</td>
-              <td>{{ vehicle.VIN }}</td>
-            </tr>
-          </tbody>
-        </table>
-        
-        
-      </div>
-    </div>
-  </div>
-</div> -->
-
-<div class="w-full  ">
+<div class="w-full">
   <div class="">
     <div class="flex justify-end items-center p-2 w-full">
-      <button  (click)="openModal()" class="border mr-5">Add new</button>
+      <button
+        (click)="openModal()"
+        class="border mr-5 px-4 py-2 text-white bg-blue-600 rounded hover:bg-blue-300 focus:outline-none mr-2"
+      >
+        Add new
+      </button>
     </div>
     <div class="container mx-auto p-6 bg-gray-50 rounded-lg shadow-md">
       <div class="overflow-x-auto bg-white rounded-lg shadow-md">
         <table datatable [dtOptions]="dtOptions" class="min-w-full table-auto">
-          <thead>
-            <tr>
-              <th>Yrs Of Mfg</th>
+          <thead class=" ">
+            <tr class="">
               <th>Vehicle Name</th>
+              <th>Yrs Of Mfg</th>
               <th>Vehicle Types</th>
               <th>VIN</th>
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let vehicle of vehicleList(); let i = index">
-              <td>{{ vehicle.YOM }}</td>
+            @for (vehicle of vehicleList(); track $index) {
+            <tr class="text-center">
               <td>{{ vehicle.vehicle_name }}</td>
+              <td>{{ vehicle.YOM }}</td>
               <td>{{ vehicle.type }}</td>
               <td>{{ vehicle.VIN }}</td>
-              <td><button>edit</button></td>
-              <td ><button (click)="deleteVehicleId(vehicle.vehicle_id)">delete</button></td>
+              <td>
+                <button
+                  (click)="openModal(vehicle)"
+                  class="px-4 py-2 text-white bg-blue-600 rounded hover:bg-blue-300 focus:outline-none m-1 "
+                >
+                  edit
+                </button>
+
+                <button
+                  (click)="deleteVehicleId(vehicle.vehicle_id)"
+                  class="px-4 py-2 text-white bg-blue-600 rounded hover:bg-blue-300 focus:outline-none"
+                >
+                  delete
+                </button>
+              </td>
             </tr>
+            }
           </tbody>
         </table>
       </div>
     </div>
   </div>
-  <div *ngIf="isModalVisible" class="  inset-0 z-40 flex items-center justify-center bg-black bg-opacity-50">
-    <div class="relative w-full max-w-md p-6 mx-2 bg-white rounded-lg shadow-lg">
+  <div
+    *ngIf="isModalVisible"
+    class="inset-0 z-40 flex items-center justify-center bg-black bg-opacity-50 absolute top-0 left-0"
+  >
+    <div
+      class="relative w-full max-w-md p-6 mx-2 bg-white rounded-lg shadow-lg"
+    >
       <!-- Modal Header -->
-      <div class="flex justify-between items-start pb-4 border-b border-gray-200">
+      <div
+        class="flex justify-between items-start pb-4 border-b border-gray-200"
+      >
         <h2 class="text-xl font-semibold">Add New User</h2>
-        <button (click)="closeModal()" class="text-gray-500 hover:text-gray-700">&times;</button>
+        <button
+          (click)="closeModal()"
+          class="text-gray-500 hover:text-gray-700 text-2xl"
+        >
+          &times;
+        </button>
       </div>
 
-      <!-- Modal Content --> 
-      <div   class="mt-6 p-4 bg-gray-100" *ngFor="let vehicle of vehicleList(); let i = index">
-        <div class="mb-4">
-          <label>Yrs Of Mfg</label>
-          <input type="text" class="mt-1 block w-full border" [(ngModel)]="this.vehicleObj.YOM" [ngModelOptions]="{standalone: true}"/>
-        </div>
-      
+      <!-- Modal Content -->
+      <!-- Vehicle Form in Modal -->
+      <div *ngIf="isModalVisible" class="mt-6 p-4 bg-gray-100">
         <div class="mb-4">
           <label>Vehicle Name</label>
-          <input type="text" class="mt-1 block w-full border" [(ngModel)]="this.vehicleObj.vehicle_name " [ngModelOptions]="{standalone: true}"/>
+          <input
+            type="text"
+            class="mt-1 block w-full border"
+            [(ngModel)]="vehicleObj.vehicle_name"
+          />
         </div>
-      
         <div class="mb-4">
-          <label>Vehicle Types</label>
-          <input type="text" class="mt-1 block w-full border" [(ngModel)]="this.vehicleObj.type" [ngModelOptions]="{standalone: true}"/>
+          <label>Year of Manufacture</label>
+          <input
+            type="text"
+            class="mt-1 block w-full border"
+            [(ngModel)]="vehicleObj.YOM"
+          />
         </div>
-      
+
+        <div class="mb-4">
+          <label>Vehicle Type</label>
+          <select
+            name="type"
+            class="mt-1 block w-full border"
+            [(ngModel)]="vehicleObj.type"
+            [ngModelOptions]="{ standalone: true }"
+          >
+            <option value="petrol">Petrol</option>
+            <option value="diesel">Diesel</option>
+            <option value="EV">EV</option>
+          </select>
+        </div>
+
         <div class="mb-4">
           <label>VIN</label>
-          <input type="email" class="mt-1 block w-full border" [(ngModel)]="this.vehicleObj.VIN" [ngModelOptions]="{standalone: true}" />
-        </div> 
-      </div>  
+          <input
+            type="text"
+            class="mt-1 block w-full border"
+            [(ngModel)]="vehicleObj.VIN"
+          />
+        </div>
+      </div>
+
       <!-- Modal Footer -->
       <div class="mt-6 text-right">
-        <button (click)="openModal()" class="px-4 py-2 text-white bg-red-500 rounded hover:bg-red-600 focus:outline-none">Cancel</button>
-        <button (click)="closeModal()" class="px-4 py-2 text-white bg-red-500 rounded hover:bg-red-600 focus:outline-none">Cancel</button>
-        <button (click)="createVehicle()" class="px-4 py-2 text-white bg-blue-600  rounded hover:bg-blue-300 focus:outline-none ml-2">Save</button>
+        <ng-container *ngIf="vehicleObj.vehicle_id; else saveButton">
+          <!-- Update button if vehicleObj.vehicle_id exists -->
+          <button
+            (click)="onUpdate()"
+            class="px-4 py-2 text-white bg-red-500 rounded hover:bg-red-600 focus:outline-none mr-2"
+          >
+            Update cars
+          </button>
+        </ng-container>
+
+        <!-- Save button if vehicleObj.vehicle_id does not exist -->
+        <ng-template #saveButton>
+          <button
+            (click)="createVehicle()"
+            class="px-4 py-2 text-white bg-blue-600 rounded hover:bg-blue-300 focus:outline-none mr-2"
+          >
+            Save
+          </button>
+        </ng-template>
+
+        <!-- Cancel button (always shown) -->
+        <button
+          (click)="closeModal()"
+          class="px-4 py-2 text-white bg-red-500 rounded hover:bg-red-600 focus:outline-none"
+        >
+          Cancel
+        </button>
       </div>
     </div>
   </div>

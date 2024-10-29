@@ -6,8 +6,7 @@ import { Config } from 'datatables.net';
 import { FormsModule } from '@angular/forms';
 import { MasterService } from '../../service/master.service';
 import { Vehicles } from '../../model/class/vehicle';
-import { VehicleResponse } from '../../model/interface/master';
-import { error } from 'console';
+import { VehicleResponse } from '../../model/interface/master'; 
 
 @Component({
   selector: 'app-vehicle',
@@ -16,10 +15,7 @@ import { error } from 'console';
   templateUrl: './vehicle.component.html',
   styleUrl: './vehicle.component.css',
 })
-export class VehicleComponent implements OnInit {
-  // vehicles = inject(Vehicles);
-  // vehicleSrv = inject(Vehicles);
-  // vehicleObj : Vehicles = new Vehicles;
+export class VehicleComponent implements OnInit { 
   vehicleList = signal<Vehicles[]>([]);
   masterSrv = inject(MasterService);
   vehicleObj: Vehicles = new Vehicles();
@@ -33,8 +29,20 @@ export class VehicleComponent implements OnInit {
 
   isModalVisible = false;
 
-  openModal() {
+  openModal(vehicle?: Vehicles) {
     this.isModalVisible = true;
+    this.vehicleObj = vehicle
+      ? { ...vehicle }
+      : {
+          YOM: '',
+          vehicle_name: '',
+          type: '',
+          VIN: '',
+          vehicle_id: '',
+          created_at: '',
+          updated_at: '',
+          corporate_id: '',
+        };
   }
 
   closeModal() {
@@ -55,6 +63,7 @@ export class VehicleComponent implements OnInit {
       (res: VehicleResponse) => {
         alert('new employe created');
         this.displayAllVehicle();
+        this.isModalVisible = false;
         this.vehicleObj = new Vehicles();
       },
       (error) => {
@@ -63,26 +72,35 @@ export class VehicleComponent implements OnInit {
     );
   }
 
-  deleteVehicleId(id: string) {
-    console.log(id);
+  deleteVehicleId(id: string) { 
     this.masterSrv.deleteVehicle(id).subscribe(
-      (res: VehicleResponse) => {
-        alert('this vehicle was deleted successful');
+      (res) => {
+        alert(res.message);
         this.displayAllVehicle();
       },
       (error) => {
-        alert('error come from backend team');
+        alert(error.message);
       }
     );
   }
 
-  onUpdate(){
+  onUpdate() {
     this.displayAllVehicle();
-    this.masterSrv.updateVehicle(this.vehicleObj).subscribe((res: VehicleResponse)=>{
-      alert('update successfully')
-     this.displayAllVehicle();
-    },(error) => {
-      alert('something happn ')
-    })
+    this.masterSrv.updateVehicle(this.vehicleObj).subscribe(
+      (res: VehicleResponse) => {
+        alert('update successfully');
+        this.isModalVisible = false;
+        this.displayAllVehicle();
+      },
+      (error) => {
+        alert('something happn ');
+      }
+    );
+  }
+
+  onEdit(data: Vehicles) {
+    this.isModalVisible = true;
+    this.vehicleObj = data;
+    console.log(this.vehicleObj, 'trueeee----');
   }
 }
