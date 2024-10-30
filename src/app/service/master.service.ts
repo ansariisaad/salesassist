@@ -2,7 +2,12 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Distributors } from '../model/class/distributor';
 import { Observable } from 'rxjs';
-import { VehicleResponse } from '../model/interface/master';
+import {
+  DealerResponse,
+  SingleDealerResponse,
+  UserResponse,
+  VehicleResponse,
+} from '../model/interface/master';
 import { Vehicles } from '../model/class/vehicle';
 
 @Injectable({
@@ -13,16 +18,54 @@ export class MasterService {
 
   constructor(private http: HttpClient) {}
 
-  getAllDistributor(): Observable<Distributors> {
+  // Dealer All
+
+  getAllDealer(): Observable<DealerResponse> {
     const token = sessionStorage.getItem('adminToken');
     const headers = new HttpHeaders()
       .set('authorization', `Bearer ${token}`)
       .set('accept', 'application/json');
-    return this.http.get<Distributors>(this.apiUrl + 'distributors/all', {
+    return this.http.get<DealerResponse>(this.apiUrl + 'dealers/all', {
       headers,
     });
   }
 
+  getDealerById(id: string): Observable<SingleDealerResponse> {
+    const token = sessionStorage.getItem('adminToken');
+    const headers = new HttpHeaders()
+      .set('authorization', `Bearer ${token}`)
+      .set('accept', 'application/json');
+    return this.http.get<SingleDealerResponse>(`${this.apiUrl}dealers/${id}`, {
+      headers,
+    });
+  }
+
+  getAllUser(id: string): Observable<UserResponse[]> {
+    const token = sessionStorage.getItem('adminToken');
+    const headers = new HttpHeaders()
+      .set('authorization', `Bearer ${token}`)
+      .set('accept', 'application/json');
+    return this.http.get<UserResponse[]>(
+      `${this.apiUrl}dealers/${id}/users/all`,
+      {
+        headers,
+      }
+    );
+  }
+
+  getAllLead(id: string): Observable<UserResponse[]> {
+    const token = sessionStorage.getItem('adminToken');
+    const headers = new HttpHeaders()
+      .set('authorization', `Bearer ${token}`)
+      .set('accept', 'application/json');
+    return this.http.get<UserResponse[]>(
+      `${this.apiUrl}dealers/${id}/leads/all`,
+      {
+        headers,
+      }
+    );
+  }
+  
   createDist(obj: Distributors): Observable<Distributors> {
     const token = sessionStorage.getItem('adminToken');
     const headers = new HttpHeaders()
@@ -73,8 +116,12 @@ export class MasterService {
     const headers = new HttpHeaders()
       .set('authorization', `Bearer ${token}`)
       .set('accept', 'application/json');
-      return this.http.put<VehicleResponse>(`${this.apiUrl}vehicles/${obj.vehicle_id}/update`, obj , {
+    return this.http.put<VehicleResponse>(
+      `${this.apiUrl}vehicles/${obj.vehicle_id}/update`,
+      obj,
+      {
         headers,
-      }); 
+      }
+    );
   }
 }

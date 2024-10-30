@@ -2,8 +2,13 @@
   <div class="flex justify-center">
     <!-- Button to Open Modal -->
     <!-- <button (click)="openModal()" class="border p-2 hover:bg-black hover:text-white ml-4">Add User</button> -->
-    
-    <button (click)="openModal()" class="px-4 py-2 text-white bg-blue-600  rounded hover:bg-blue-300 focus:outline-none ml-2">Add New User</button>
+
+    <button
+      (click)="openModal()"
+      class="px-4 py-2 text-white bg-blue-600 rounded hover:bg-blue-300 focus:outline-none ml-2"
+    >
+      Add New User
+    </button>
   </div>
 
   <!-- Main Content -->
@@ -31,71 +36,119 @@
         <thead class="bg-gray-200 text-gray-700">
           <tr>
             <th class="py-3 px-4 text-left">Sr No</th>
-            <th class="py-3 px-4 text-left">Branch Name</th>
-            <th class="py-3 px-4 text-left">Pincode</th>
-            <th class="py-3 px-4 text-left">Dist Name</th>
-            <th class="py-3 px-4 text-left">Dist E-mail</th> 
+            <th class="py-3 px-4 text-left">Dealer Name</th>
+            <th class="py-3 px-4 text-left">Dealer Code </th>
+            <!-- <th class="py-3 px-4 text-left">Corporate Id</th>  -->
           </tr>
         </thead>
         <tbody>
-          @for (item of distributorList(); track $index) { 
-          <tr   class="border-b hover:bg-gray-100 transition-colors">
-            <td class="py-3 px-4">{{  $index+1 }}</td>
-            <td class="py-3 px-4">{{ item.branch_name }}</td>
-            <td class="py-3 px-4">{{ item.pincode }}</td>
-            <td class="py-3 px-4">{{ item.dist_name }}</td>
-            <td class="py-3 px-4">{{ item.dist_email }}</td>
-          </tr>
-        }
+          @for (item of dealerList(); track $index) {
+            <tr class="border-b hover:bg-gray-100 transition-colors">
+              <td class="py-3 px-4">{{ $index + 1 }}</td>
+              <td class="py-3 px-4">
+                <a [routerLink]="['/Admin/dealer', item.dealer_id]"> 
+                  {{ item.dealer_name }}
+                </a>
+              </td>
+              <td class="py-3 px-4">
+                <a [routerLink]="['/Admin/dealer', item.dealer_code]">
+                  {{ item.dealer_code }}
+                </a>
+              </td> 
+            </tr>
+          }
         </tbody>
+        
       </table>
     </div>
   </div>
 
   <!-- Modal -->
-  <div *ngIf="isModalVisible" class="fixed inset-0 z-40 flex items-center justify-center bg-black bg-opacity-50">
-    <div class="relative w-full max-w-md p-6 mx-2 bg-white rounded-lg shadow-lg">
+  <div
+    *ngIf="isModalVisible"
+    class="fixed inset-0 z-40 flex items-center justify-center bg-black bg-opacity-50"
+  >
+    <div
+      class="relative w-full max-w-md p-6 mx-2 bg-white rounded-lg shadow-lg"
+    >
       <!-- Modal Header -->
-      <div class="flex justify-between items-start pb-4 border-b border-gray-200">
+      <div
+        class="flex justify-between items-start pb-4 border-b border-gray-200"
+      >
         <h2 class="text-xl font-semibold">Add New User</h2>
-        <button (click)="closeModal()" class="text-gray-500 hover:text-gray-700">&times;</button>
+        <button
+          (click)="closeModal()"
+          class="text-gray-500 hover:text-gray-700"
+        >
+          &times;
+        </button>
       </div>
 
       <!-- Modal Content -->
-      <div *ngFor="let item of distributorList(); let i = index" class="mt-6 p-4 bg-gray-100">
+      <div
+        *ngFor="let item of dealerList(); let i = index"
+        class="mt-6 p-4 bg-gray-100"
+      >
         <div class="mb-4">
           <label>Branch Name</label>
-          <input type="text" class="mt-1 block w-full border" [(ngModel)]="item.branch_name" />
+          <input
+            type="text"
+            class="mt-1 block w-full border"
+            [(ngModel)]="item.dealer_name"
+          />
         </div>
-      
+
         <div class="mb-4">
           <label>Pincode</label>
-          <input type="text" class="mt-1 block w-full border" [(ngModel)]="item.pincode" />
+          <input
+            type="text"
+            class="mt-1 block w-full border"
+            [(ngModel)]="item.dealer_code"
+          />
         </div>
-      
-        <div class="mb-4">
+
+        <!-- <div class="mb-4">
           <label>Distributor Name</label>
-          <input type="text" class="mt-1 block w-full border" [(ngModel)]="item.dist_name" />
-        </div>
-      
-        <div class="mb-4">
+          <input
+            type="text"
+            class="mt-1 block w-full border"
+            [(ngModel)]="item.corporate_id"
+          />
+        </div> -->
+
+        <!-- <div class="mb-4">
           <label>Distributor Email</label>
-          <input type="email" class="mt-1 block w-full border" [(ngModel)]="item.dist_email" />
+          <input
+            type="email"
+            class="mt-1 block w-full border"
+            [(ngModel)]="item.dist_email"
+          />
         </div>
-      
+
         <div class="mb-4">
           <label>Distributor Password</label>
-          <input type="password" class="mt-1 block w-full border" [(ngModel)]="item.dist_password" />
-        </div>
+          <input
+            type="password"
+            class="mt-1 block w-full border"
+            [(ngModel)]="item.dist_password"
+          />
+        </div> -->
       </div>
-      
-      
-      
 
       <!-- Modal Footer -->
       <div class="mt-6 text-right">
-        <button (click)="closeModal()" class="px-4 py-2 text-white bg-red-500 rounded hover:bg-red-600 focus:outline-none">Cancel</button>
-        <button (click)="createNewDist()" class="px-4 py-2 text-white bg-blue-600  rounded hover:bg-blue-300 focus:outline-none ml-2">Save</button>
+        <button
+          (click)="closeModal()"
+          class="px-4 py-2 text-white bg-red-500 rounded hover:bg-red-600 focus:outline-none"
+        >
+          Cancel
+        </button>
+        <button
+          (click)="createNewDist()"
+          class="px-4 py-2 text-white bg-blue-600 rounded hover:bg-blue-300 focus:outline-none ml-2"
+        >
+          Save
+        </button>
       </div>
     </div>
   </div>

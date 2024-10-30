@@ -4,9 +4,10 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { SharedModule } from '../../shared/shared.module';
 import { FormsModule } from '@angular/forms';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MasterService } from '../../service/master.service'; 
-import { IApiResponse } from '../../model/interface/master';
+import { MasterService } from '../../service/master.service';
 import { Distributors } from '../../model/class/distributor';
+import { dealers } from '../../model/class/dealers';
+import { DealerResponse } from '../../model/interface/master';
 import { error } from 'console';
 
 interface Distributor {
@@ -34,38 +35,35 @@ interface DistributorResponse {
   standalone: true,
   imports: [CommonModule, SharedModule, FormsModule, MatProgressSpinnerModule],
   templateUrl: './dealer.component.html',
-  styleUrls: ['./dealer.component.css']
+  styleUrls: ['./dealer.component.css'],
 })
 export class DealerComponent implements OnInit {
   private http = inject(HttpClient);
+  dealerList = signal<dealers[]>([]);
+  masterSrv = inject(MasterService);
 
   users: Distributor[] = [];
   displayedUsers: Distributor[] = [];
   selectedRowCount = 3;
-  isLoading = false;  
-  masterSrv = inject(MasterService);
-  distributorList = signal<Distributors[]>([
-    new Distributors(),
-  ]);
-  newDistributorList : Distributors = new Distributors();
+  isLoading = false;
+  newDistributorList: Distributors = new Distributors();
   isModalVisible = false;
 
   openModal() {
     this.isModalVisible = true;
   }
-  
+
   closeModal() {
     this.isModalVisible = false;
   }
-   
+
   rowOptions = [1, 2, 5, 10, 20, 30, 50];
 
-   
   ngOnInit(): void {
-    // this.fetchDealerData(); 
-    this.getDistAll();
+    // this.fetchDealerData();
+    this.getAllDealer();
+
   }
-  
 
   updateDisplayedUsers() {
     this.displayedUsers = this.users.slice(0, this.selectedRowCount);
@@ -77,7 +75,7 @@ export class DealerComponent implements OnInit {
   //   const headers = new HttpHeaders()
   //     .set('authorization', `Bearer ${token}`)
   //     .set('accept', 'application/json');
-  //     this.isLoading = true;  
+  //     this.isLoading = true;
 
   //     this.http.get<DistributorResponse>(apiUrl, { headers }).subscribe({
   //       next: (response) => {
@@ -98,26 +96,27 @@ export class DealerComponent implements OnInit {
   // }
 
   
-  getDistAll(){
-    this.masterSrv.getAllDistributor().subscribe((res:any)=>{
-      console.log(res , 'ressssssss-----');
-      this.distributorList.set(res);
-      this.isLoading = true;
-    },error=>{
-      // alert('server side error')
-    })
+
+  getAllDealer() {
+    this.masterSrv.getAllDealer().subscribe(
+      (res: DealerResponse) => {
+        this.dealerList.set(res.dealers);
+      },
+      (error) => {
+        alert(error.message);
+      }
+    );
   }
 
-  createNewDist(){
-    this.masterSrv.createDist(this.newDistributorList).subscribe((res:any)=>{ 
-      alert("new Distributor Created");
-      this.newDistributorList = new Distributors();
-    },error=>{
-      alert("server Error")
-    })
+  createNewDist() {
+    this.masterSrv.createDist(this.newDistributorList).subscribe(
+      (res: any) => {
+        alert('new Distributor Created');
+        this.newDistributorList = new Distributors();
+      },
+      (error) => {
+        alert('server Error');
+      }
+    );
   }
-
-
-
- 
 }

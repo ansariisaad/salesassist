@@ -1,18 +1,28 @@
-import { Distributors  } from "../class/distributor";
-import { Vehicles } from "../class/vehicle";
+import { dealers } from '../class/dealers';
+import { SingleDealer } from '../class/dealerSingle';
+import { Users } from '../class/users';
+import { Vehicles } from '../class/vehicle';
 
-export interface IApiResponse{
-    totalDists : number;
-    totalPages : number; 
-    currentPage: number;
-    distributor: Distributors;
+export interface DealerResponse {
+  totalDealers: number;
+  totalPages: number;
+  currentPage: number;
+  dealers: dealers[];
 }
 
-export interface VehicleResponse{
-    totalVehicles : number;
-    totalPages : number;
-    currentPage : number;
-    vehicle : Vehicles[];
+export interface VehicleResponse {
+  totalVehicles: number;
+  totalPages: number;
+  currentPage: number;
+  vehicle: Vehicles[];
 }
 
- 
+export interface SingleDealerResponse {
+  dealer: SingleDealer;
+  users: number;
+  leads: number;
+}
+
+export interface UserResponse extends Users {
+   
+}

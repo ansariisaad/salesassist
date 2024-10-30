@@ -1,0 +1,145 @@
+<div class="container mx-auto p-6 border shadow-md rounded-lg">
+  <div class="bg-white rounded-lg p-6 mb-6" *ngIf="dealerData">
+    <!-- Dealer Name and Code -->
+    <div class="flex justify-between items-center border-b pb-4 mb-4">
+      <div>
+        <h2 class="text-2xl font-semibold text-gray-800">
+          {{ dealerData.dealer.dealer_name }}
+        </h2>
+        <p class="text-sm text-gray-500">
+          Dealer Code: {{ dealerData.dealer.dealer_code }}
+        </p>
+      </div>
+      <div class="bg-blue-500 text-white px-4 py-2 rounded-lg">Dealer</div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="flex gap-4">
+      <button
+        class="px-16 py-8 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg shadow-md transition duration-200 ease-in-out" (click)="toggleUsersTable(); getUser(dealerData.dealer.dealer_id)"
+      >
+        Users {{ dealerData.users }}
+      </button>
+      <button
+        class="px-16 py-8 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg shadow-md transition duration-200 ease-in-out" (click)="toggleLeadsTable(); getAllLeads(dealerData.dealer.dealer_id)"
+      >
+        Leads {{ dealerData.leads }}
+      </button>
+    </div>
+  </div>
+
+  <!-- Users Table -->
+  <div class="bg-white rounded-lg p-6" *ngIf="showUsersTable">
+    <h2 class="text-2xl font-semibold text-gray-800 mb-4">Users Table</h2>
+    <table class="min-w-full divide-y divide-gray-200">
+      <thead class="bg-gray-50">
+        <tr>
+          <th
+            class="px-6 py-3 text-left font-semibold font-medium text-gray-500 uppercase tracking-wider"
+          >
+            Account ID
+          </th>
+          <th
+            class="px-6 py-3 text-left font-semibold font-medium text-gray-500 uppercase tracking-wider"
+          >
+            Name
+          </th>
+          <th
+            class="px-6 py-3 text-left font-semibold font-medium text-gray-500 uppercase tracking-wider"
+          >
+            Email
+          </th>
+          <th
+            class="px-6 py-3 text-left font-semibold font-medium text-gray-500 uppercase tracking-wider"
+          >
+            Phone
+          </th>
+          <th
+            class="px-6 py-3 text-left font-semibold font-medium text-gray-500 uppercase tracking-wider"
+          >
+            Role
+          </th>
+          <th
+            class="px-6 py-3 text-left font-semibold font-medium text-gray-500 uppercase tracking-wider"
+          >
+            Dealer Code
+          </th>
+        </tr>
+      </thead>
+      <tbody class="bg-white divide-y divide-gray-200">
+        <tr *ngFor="let user of userList()">
+          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+            {{ user.account_id }}
+          </td>
+          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+            {{ user.name }}
+          </td>
+          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+            {{ user.email }}
+          </td>
+          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+            {{ user.phone }}
+          </td>
+          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+            {{ user.role }}
+          </td>
+          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+            {{ user.dealer_code }}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="bg-white rounded-lg p-6 mt-8" *ngIf="!showUsersTable">
+    <h2 class="text-2xl font-semibold text-gray-800 mb-4">Leads Table</h2>
+    <table class="min-w-full divide-y divide-gray-200">
+      <thead class="bg-gray-50">
+        <tr>
+          <th class="px-6 py-3 text-left font-semibold text-gray-500 uppercase tracking-wider">Lead Code</th>
+          <th class="px-6 py-3 text-left font-semibold text-gray-500 uppercase tracking-wider">Dealer Name</th>
+          <th class="px-6 py-3 text-left font-semibold text-gray-500 uppercase tracking-wider">Dealer Code</th>
+          <th class="px-6 py-3 text-left font-semibold text-gray-500 uppercase tracking-wider">Status</th>
+          <th class="px-6 py-3 text-left font-semibold text-gray-500 uppercase tracking-wider">Purchase Type</th>
+          <th class="px-6 py-3 text-left font-semibold text-gray-500 uppercase tracking-wider">Type</th>
+          <th class="px-6 py-3 text-left font-semibold text-gray-500 uppercase tracking-wider">Sub Type</th>
+          <th class="px-6 py-3 text-left font-semibold text-gray-500 uppercase tracking-wider">Brand</th>
+          <th class="px-6 py-3 text-left font-semibold text-gray-500 uppercase tracking-wider">PMI</th>
+          <th class="px-6 py-3 text-left font-semibold text-gray-500 uppercase tracking-wider">Lead Source</th>
+          <th class="px-6 py-3 text-left font-semibold text-gray-500 uppercase tracking-wider">Last Name</th>
+          <th class="px-6 py-3 text-left font-semibold text-gray-500 uppercase tracking-wider">Description</th>
+          <th class="px-6 py-3 text-left font-semibold text-gray-500 uppercase tracking-wider">Mobile</th>
+          <th class="px-6 py-3 text-left font-semibold text-gray-500 uppercase tracking-wider">Phone</th>
+          <th class="px-6 py-3 text-left font-semibold text-gray-500 uppercase tracking-wider">Email</th>
+          <th class="px-6 py-3 text-left font-semibold text-gray-500 uppercase tracking-wider">Lead Owner</th>
+          <th class="px-6 py-3 text-left font-semibold text-gray-500 uppercase tracking-wider">Owner Account ID</th>
+          <th class="px-6 py-3 text-left font-semibold text-gray-500 uppercase tracking-wider">Enquiry Type</th>
+          <th class="px-6 py-3 text-left font-semibold text-gray-500 uppercase tracking-wider">Expected Date of Purchase</th>
+        </tr>
+      </thead>
+      <tbody class="bg-white divide-y divide-gray-200">
+        <tr *ngFor="let lead of leadList()">
+          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ lead.lead_code }}</td>
+          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ lead.dealer_name }}</td>
+          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ lead.dealer_code }}</td>
+          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ lead.status }}</td>
+          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ lead.purchase_type }}</td>
+          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ lead.type }}</td>
+          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ lead.sub_type }}</td>
+          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ lead.brand }}</td>
+          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ lead.PMI }}</td>
+          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ lead.lead_source }}</td>
+          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ lead.lname }}</td>
+          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ lead.description }}</td>
+          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ lead.mobile }}</td>
+          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ lead.phone }}</td>
+          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ lead.email }}</td>
+          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ lead.lead_owner }}</td>
+          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ lead.owner_acc_id }}</td>
+          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ lead.enquiry_type }}</td>
+          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ lead.expected_date_purchase }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  
+</div>

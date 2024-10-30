@@ -4,9 +4,9 @@ import { SharedModule } from '../../shared/shared.module';
 import { DataTablesModule } from 'angular-datatables';
 import { Config } from 'datatables.net';
 import { FormsModule } from '@angular/forms';
-import { MasterService } from '../../service/master.service';
-import { Vehicles } from '../../model/class/vehicle';
+import { MasterService } from '../../service/master.service'; 
 import { VehicleResponse } from '../../model/interface/master'; 
+import { Vehicles } from '../../model/class/vehicle';
 
 @Component({
   selector: 'app-vehicle',
