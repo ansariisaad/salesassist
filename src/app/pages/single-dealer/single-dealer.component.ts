@@ -5,7 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Users } from '../../model/class/users';
 import { SharedModule } from '../../shared/shared.module';
-import { MasterService } from '../../service/master.service'; 
+import { MasterService } from '../../service/master.service';
 
 @Component({
   selector: 'app-single-dealer',
@@ -18,7 +18,7 @@ export class SingleDealerComponent implements OnInit {
   userList = signal<any>([]);
   leadList = signal<any>([]);
   dealerData: SingleDealerResponse | undefined;
-  masterSrv = inject(MasterService); 
+  masterSrv = inject(MasterService);
 
   // Declare showUsersTable as a class property
   showUsersTable: boolean = true; // Initialize to true
@@ -29,7 +29,7 @@ export class SingleDealerComponent implements OnInit {
     // Retrieve dealer ID from route parameters
     this.route.paramMap.subscribe((params) => {
       const dealerId = params.get('id');
-  
+
       if (dealerId) {
         this.getUser(dealerId);
       } else {
@@ -43,7 +43,7 @@ export class SingleDealerComponent implements OnInit {
       console.log(this.dealerData, 'Dealer Data from Resolver');
     });
   }
-   
+
   getUser(dealerId: string) {
     this.masterSrv.getAllUser(dealerId).subscribe({
       next: (res: Users[]) => {
@@ -63,7 +63,7 @@ export class SingleDealerComponent implements OnInit {
         this.leadList.set(res); // Make sure to set leadList
       },
       error: (err) => {
-        alert(err.message || "An error occurred while fetching leads.");
+        alert(err.message || 'An error occurred while fetching leads.');
       },
     });
   }

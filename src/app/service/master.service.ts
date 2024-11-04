@@ -9,6 +9,7 @@ import {
   VehicleResponse,
 } from '../model/interface/master';
 import { Vehicles } from '../model/class/vehicle';
+import { dealers } from '../model/class/dealers';
 
 @Injectable({
   providedIn: 'root',
@@ -77,6 +78,43 @@ export class MasterService {
     );
   }
 
+  // dealers/create
+  updateDealer(obj: dealers): Observable<dealers> {
+    const token = sessionStorage.getItem('adminToken');
+    const headers = new HttpHeaders()
+      .set('authorization', `Bearer ${token}`)
+      .set('accept', 'application/json');
+      return this.http.put<dealers>(
+        `${this.apiUrl}dealers/${obj.dealer_id}/update`,
+        obj,
+        {
+          headers,
+        }
+      );
+  }
+
+  createDealer(obj: dealers): Observable<dealers> {
+    const token = sessionStorage.getItem('adminToken');
+    const headers = new HttpHeaders()
+      .set('authorization', `Bearer ${token}`)
+      .set('accept', 'application/json');
+      return this.http.post<dealers>(
+        this.apiUrl + 'dealers/create',
+        obj,
+        { headers }
+      );
+  }
+
+  deleteDealer(id: string): Observable<any> {
+    const token = sessionStorage.getItem('adminToken');
+    const headers = new HttpHeaders()
+      .set('authorization', `Bearer ${token}`)
+      .set('accept', 'application/json');
+    return this.http.delete<any>(`${this.apiUrl}dealers/${id}/delete`, {
+      headers,
+    });
+  }
+
   // Vehicle API's
 
   getAllVehicle(): Observable<VehicleResponse> {
@@ -124,4 +162,6 @@ export class MasterService {
       }
     );
   }
+
+
 }

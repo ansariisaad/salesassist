@@ -7,28 +7,11 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MasterService } from '../../service/master.service';
 import { Distributors } from '../../model/class/distributor';
 import { dealers } from '../../model/class/dealers';
-import { DealerResponse } from '../../model/interface/master';
-import { error } from 'console';
+import { DealerResponse } from '../../model/interface/master'; 
 
-interface Distributor {
-  distributor_id: string;
-  dist_name: string;
-  dist_role: string;
-  dist_email: string;
-  dist_password: string;
-  d_code: string;
-  branch_name: string;
-  pincode: number;
-  created_at: string;
-  updated_at: string;
-}
+ 
 
-interface DistributorResponse {
-  totalDists: number;
-  totalPages: number;
-  currentPage: number;
-  distributors: Distributor[];
-}
+ 
 
 @Component({
   selector: 'app-dealer',
@@ -41,21 +24,35 @@ export class DealerComponent implements OnInit {
   private http = inject(HttpClient);
   dealerList = signal<dealers[]>([]);
   masterSrv = inject(MasterService);
-
-  users: Distributor[] = [];
-  displayedUsers: Distributor[] = [];
+  dealerObj : dealers = new dealers(); 
   selectedRowCount = 3;
   isLoading = false;
   newDistributorList: Distributors = new Distributors();
   isModalVisible = false;
+  isEditMode: boolean = false;
+  
 
-  openModal() {
+  openModal(dealer?: dealers) {
     this.isModalVisible = true;
+    this.dealerObj = dealer
+      ? { ...dealer }  // Populate dealer data for editing
+      : {              // Reset dealerObj for creating a new dealer
+          dealer_id: '',
+          dealer_name: '',
+          dealer_code: '',
+          created_at: '',
+          updated_at: '',
+          corporate_id: '',
+        };
+  
+    console.log("Modal Opened with dealerObj:", this.dealerObj);
   }
-
+  
   closeModal() {
     this.isModalVisible = false;
   }
+  
+  
 
   rowOptions = [1, 2, 5, 10, 20, 30, 50];
 
@@ -65,9 +62,7 @@ export class DealerComponent implements OnInit {
 
   }
 
-  updateDisplayedUsers() {
-    this.displayedUsers = this.users.slice(0, this.selectedRowCount);
-  }
+   
 
   // fetchDealerData() {
   //   const token = sessionStorage.getItem('adminToken');
@@ -108,14 +103,59 @@ export class DealerComponent implements OnInit {
     );
   }
 
-  createNewDist() {
-    this.masterSrv.createDist(this.newDistributorList).subscribe(
-      (res: any) => {
-        alert('new Distributor Created');
-        this.newDistributorList = new Distributors();
+  // createNewDist() {
+  //   this.masterSrv.createDist(this.newDistributorList).subscribe(
+  //     (res: any) => {
+  //       alert('new Distributor Created');
+  //       this.newDistributorList = new Distributors();
+  //     },
+  //     (error) => {
+  //       alert('server Error');
+  //     }
+  //   );
+  // }
+
+  createNewDealer() {
+    this.getAllDealer();
+    this.masterSrv.createDealer(this.dealerObj).subscribe(
+      (res: dealers) => {
+        alert('Create New Dealer successfully');
+        this.isModalVisible = false; 
+        this.getAllDealer();
       },
       (error) => {
-        alert('server Error');
+        alert('something happn ');
+      }
+    );
+  }
+
+  onUpdate() {
+    this.getAllDealer();
+    this.masterSrv.updateDealer(this.dealerObj).subscribe(
+      (res: dealers) => {
+        alert('update successfully');
+        this.isModalVisible = false; 
+      },
+      (error) => {
+        alert('something happn ');
+      }
+    );
+  }
+
+  onEdit(data: dealers){
+    this.isModalVisible = true;
+    this.dealerObj = data;
+    console.log(this.dealerObj, 'trueeee----');
+  }
+
+  deleteDealerId(id: string) { 
+    this.masterSrv.deleteDealer(id).subscribe(
+      (res) => {
+        alert(res.message);
+        this.getAllDealer();
+      },
+      (error) => {
+        alert(error.message);
       }
     );
   }

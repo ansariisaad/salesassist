@@ -125,7 +125,8 @@ form{
 }
 
 .input-div.focus > .i > i{
-    color: #38d39f;
+    /* color: #38d39f; */
+    color: #5298ee;
 }
 
 .input-div > div > input{ 

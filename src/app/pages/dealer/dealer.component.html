@@ -1,35 +1,17 @@
 <div class="w-full overflow-hidden">
   <div class="flex justify-center">
-    <!-- Button to Open Modal -->
-    <!-- <button (click)="openModal()" class="border p-2 hover:bg-black hover:text-white ml-4">Add User</button> -->
-
-    <button
-      (click)="openModal()"
-      class="px-4 py-2 text-white bg-blue-600 rounded hover:bg-blue-300 focus:outline-none ml-2"
-    >
-      Add New User
-    </button>
+    <div class="flex justify-end items-center p-2 w-full">
+      <button
+        (click)="openModal()"
+        class="border mr-5 px-4 py-2 text-white bg-blue-600 rounded hover:bg-blue-300 focus:outline-none"
+      >
+        Add new
+      </button>
+    </div>
   </div>
 
   <!-- Main Content -->
-  <div class="container mx-auto p-6 bg-gray-50 rounded-lg shadow-md mt-6">
-    <!-- Dropdown to select number of users -->
-    <div class="mb-6 flex items-center space-x-4">
-      <label for="row-count" class="text-lg font-semibold text-gray-700">
-        Select number of users:
-      </label>
-      <select
-        id="row-count"
-        [(ngModel)]="selectedRowCount"
-        (change)="updateDisplayedUsers()"
-        class="bg-white border border-gray-300 pr-10 rounded-lg p-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
-      >
-        <option *ngFor="let option of rowOptions" [value]="option">
-          {{ option }}
-        </option>
-      </select>
-    </div>
-
+  <div class="container mx-auto p-6 bg-gray-50 rounded-lg shadow-md mt-6"> 
     <!-- Table to display the users -->
     <div class="overflow-x-auto bg-white rounded-lg shadow-md">
       <table class="min-w-full table-auto">
@@ -37,117 +19,83 @@
           <tr>
             <th class="py-3 px-4 text-left">Sr No</th>
             <th class="py-3 px-4 text-left">Dealer Name</th>
-            <th class="py-3 px-4 text-left">Dealer Code </th>
-            <!-- <th class="py-3 px-4 text-left">Corporate Id</th>  -->
+            <th class="py-3 px-4 text-left">Dealer Code</th>
+            <th class="py-3 px-4 text-left">Actions</th>
           </tr>
         </thead>
         <tbody>
-          @for (item of dealerList(); track $index) {
-            <tr class="border-b hover:bg-gray-100 transition-colors">
-              <td class="py-3 px-4">{{ $index + 1 }}</td>
-              <td class="py-3 px-4">
-                <a [routerLink]="['/Admin/dealer', item.dealer_id]"> 
-                  {{ item.dealer_name }}
-                </a>
-              </td>
-              <td class="py-3 px-4">
-                <a [routerLink]="['/Admin/dealer', item.dealer_code]">
-                  {{ item.dealer_code }}
-                </a>
-              </td> 
-            </tr>
-          }
+          <tr *ngFor="let dealer of dealerList(); let i = index" class="border-b hover:bg-gray-100 transition-colors">
+            <td class="py-3 px-4">{{ i + 1 }}</td>
+            <td class="py-3 px-4">
+              <a [routerLink]="['/Admin/dealer', dealer.dealer_id]">
+                {{ dealer.dealer_name }}
+              </a>
+            </td>
+            <td class="py-3 px-4">
+              <a [routerLink]="['/Admin/dealer', dealer.dealer_code]">
+                {{ dealer.dealer_code }}
+              </a>
+            </td>
+            <td class=" ">
+              <button (click)="openModal(dealer)" class="mr-14 ">
+                <i class="fa-solid fa-pen-to-square text-blue-300 hover:text-blue-600"></i>
+              </button>
+              <button (click)="deleteDealerId(dealer.dealer_id)">
+                <i class="fa-solid fa-trash text-blue-300 hover:text-blue-600"></i>
+              </button>
+            </td>
+          </tr>
         </tbody>
-        
       </table>
     </div>
   </div>
 
   <!-- Modal -->
-  <div
-    *ngIf="isModalVisible"
-    class="fixed inset-0 z-40 flex items-center justify-center bg-black bg-opacity-50"
-  >
-    <div
-      class="relative w-full max-w-md p-6 mx-2 bg-white rounded-lg shadow-lg"
-    >
+  <div *ngIf="isModalVisible" class="fixed inset-0 z-40 flex items-center justify-center bg-black bg-opacity-50">
+    <div class="relative w-full max-w-md p-6 mx-2 bg-white rounded-lg shadow-lg">
       <!-- Modal Header -->
-      <div
-        class="flex justify-between items-start pb-4 border-b border-gray-200"
-      >
-        <h2 class="text-xl font-semibold">Add New User</h2>
-        <button
-          (click)="closeModal()"
-          class="text-gray-500 hover:text-gray-700"
-        >
-          &times;
-        </button>
+      <div class="flex justify-between items-start pb-4 border-b border-gray-200">
+        <h2 class="text-xl font-semibold">{{ dealerObj.dealer_id ? 'Edit Dealer' : 'Add New Dealer' }}</h2>
+        <button (click)="closeModal()" class="text-gray-500 hover:text-gray-700">&times;</button>
       </div>
 
       <!-- Modal Content -->
-      <div
-        *ngFor="let item of dealerList(); let i = index"
-        class="mt-6 p-4 bg-gray-100"
-      >
+      <div class="mt-6 p-4 bg-gray-100">
         <div class="mb-4">
-          <label>Branch Name</label>
-          <input
-            type="text"
-            class="mt-1 block w-full border"
-            [(ngModel)]="item.dealer_name"
-          />
+          <label>Dealer Name</label>
+          <input type="text" class="mt-1 block w-full border" [(ngModel)]="dealerObj.dealer_name" />
         </div>
-
-        <div class="mb-4">
-          <label>Pincode</label>
-          <input
-            type="text"
-            class="mt-1 block w-full border"
-            [(ngModel)]="item.dealer_code"
-          />
-        </div>
-
         <!-- <div class="mb-4">
-          <label>Distributor Name</label>
+          <label>Dealer Code</label>
+          <input type="text" class="mt-1 block w-full border" [(ngModel)]="dealerObj.dealer_code" />
+        </div> -->
+      
+        <div class="mb-4" *ngIf="!dealerObj.dealer_code || dealerObj.dealer_code.trim() === ''">
+          <label>Dealer Code</label>
           <input
             type="text"
             class="mt-1 block w-full border"
-            [(ngModel)]="item.corporate_id"
-          />
-        </div> -->
-
-        <!-- <div class="mb-4">
-          <label>Distributor Email</label>
-          <input
-            type="email"
-            class="mt-1 block w-full border"
-            [(ngModel)]="item.dist_email"
+            [(ngModel)]="dealerObj.dealer_code" 
           />
         </div>
-
-        <div class="mb-4">
-          <label>Distributor Password</label>
-          <input
-            type="password"
-            class="mt-1 block w-full border"
-            [(ngModel)]="item.dist_password"
-          />
-        </div> -->
+        
       </div>
 
-      <!-- Modal Footer -->
       <div class="mt-6 text-right">
-        <button
-          (click)="closeModal()"
-          class="px-4 py-2 text-white bg-red-500 rounded hover:bg-red-600 focus:outline-none"
-        >
+        <ng-container *ngIf="dealerObj.dealer_id; else saveButton">
+          <button (click)="onUpdate()" class="px-4 py-2 text-white bg-red-500 rounded hover:bg-red-600 focus:outline-none mr-2">
+            Edit
+          </button>
+        </ng-container>
+
+        <ng-template #saveButton>
+          <button (click)="createNewDealer()" class="px-4 py-2 text-white bg-blue-600 rounded hover:bg-blue-300 focus:outline-none mr-2">
+            Save
+          </button>
+        </ng-template>
+
+        <button (click)="closeModal()" class="px-4 py-2 text-white bg-red-500 rounded hover:bg-red-600 focus:outline-none">
           Cancel
-        </button>
-        <button
-          (click)="createNewDist()"
-          class="px-4 py-2 text-white bg-blue-600 rounded hover:bg-blue-300 focus:outline-none ml-2"
-        >
-          Save
         </button>
       </div>
     </div>

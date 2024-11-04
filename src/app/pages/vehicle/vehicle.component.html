@@ -1,5 +1,4 @@
-<div class="w-full">
-  <div class="">
+<div class="w-full overflow-hidden"> 
     <div class="flex justify-end items-center p-2 w-full">
       <button
         (click)="openModal()"
@@ -8,15 +7,16 @@
         Add new
       </button>
     </div>
-    <div class="container mx-auto p-6 bg-gray-50 rounded-lg shadow-md">
+    <div class="container mx-auto p-6 bg-gray-50 rounded-lg shadow-md mt-6">
       <div class="overflow-x-auto bg-white rounded-lg shadow-md">
         <table datatable [dtOptions]="dtOptions" class="min-w-full table-auto">
-          <thead class=" ">
+          <thead class="mb-5">
             <tr class="">
               <th>Vehicle Name</th>
               <th>Yrs Of Mfg</th>
               <th>Vehicle Types</th>
               <th>VIN</th>
+              
             </tr>
           </thead>
           <tbody>
@@ -29,16 +29,16 @@
               <td>
                 <button
                   (click)="openModal(vehicle)"
-                  class="px-4 py-2 text-white bg-blue-600 rounded hover:bg-blue-300 focus:outline-none m-1 "
+                  class="mr-10"
                 >
-                  edit
+                <i class="fa-solid fa-pen-to-square text-blue-300 hover:text-blue-600"></i>
                 </button>
 
                 <button
                   (click)="deleteVehicleId(vehicle.vehicle_id)"
-                  class="px-4 py-2 text-white bg-blue-600 rounded hover:bg-blue-300 focus:outline-none"
+                  class=""
                 >
-                  delete
+                <i class="fa-solid fa-trash text-blue-300 hover:text-blue-600"></i>
                 </button>
               </td>
             </tr>
@@ -99,6 +99,7 @@
             <option value="petrol">Petrol</option>
             <option value="diesel">Diesel</option>
             <option value="EV">EV</option>
+            
           </select>
         </div>
 
@@ -120,7 +121,8 @@
             (click)="onUpdate()"
             class="px-4 py-2 text-white bg-red-500 rounded hover:bg-red-600 focus:outline-none mr-2"
           >
-            Update cars
+          
+          edit
           </button>
         </ng-container>
 
@@ -143,5 +145,4 @@
         </button>
       </div>
     </div>
-  </div>
-</div>
+  </div> 

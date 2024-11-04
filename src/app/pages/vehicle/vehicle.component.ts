@@ -61,7 +61,7 @@ export class VehicleComponent implements OnInit {
   createVehicle() {
     this.masterSrv.createNewVehicle(this.vehicleObj).subscribe(
       (res: VehicleResponse) => {
-        alert('new employe created');
+        alert('new vehicle created');
         this.displayAllVehicle();
         this.isModalVisible = false;
         this.vehicleObj = new Vehicles();
